@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>University Event Management</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+<header>
+    <img src="img/logo.png" alt="VIT Logo" class="vit">
+</header>
+
+<!-- Navbar -->
+<nav>
+    <h1>University-Events</h1>
+    <button onclick="scrollToEvents()">Browse Events</button>
+    <div>
+        <button onclick="location.href='login.html'">Login</button>
+        <a href="#footer" class="button-link">Contact Us</a>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+    <h2>Manage University Events Seamlessly</h2>
+    <p>Register, Explore and Participate in Campus Events</p>
+    <button onclick="scrollToEvents()">Explore Now</button>
+</section>
+
+<!-- Events Section -->
+<section class="events" id="events">
+    <h3>Upcoming Events</h3>
+
+    <div class="event-grid">
+
+        <div class="card">
+            <img src="img/event1.jpg" class="event-img">
+            <h4>Tech Fest 2026</h4>
+            <p>Date: 2026-03-25</p>
+            <p>Location: Sports Triangle</p>
+            <button onclick="location.href='form.html?event=Tech Fest 2026'">Register</button>
+        </div>
+
+        <div class="card">
+            <img src="img/event2.jpg" class="event-img">
+            <h4>AI Workshop</h4>
+            <p>Date: 2026-04-05</p>
+            <p>Location: Lab 204</p>
+            <button onclick="location.href='form.html?event=AI Workshop'">Register</button>
+        </div>
+
+        <div class="card">
+            <img src="img/event3.jpg" class="event-img">
+            <h4>Sports Event</h4>
+            <p>Date: 2026-04-20</p>
+            <p>Location: Main Ground</p>
+            <button onclick="location.href='form.html?event=Sports Event'">Register</button>
+        </div>
+
+        <div class="card">
+            <img src="img/event4.jpg" class="event-img">
+            <h4>Flash Mob</h4>
+            <p>Date: 2026-05-02</p>
+            <p>Location: Rock Plaza</p>
+            <button onclick="location.href='form.html?event=Flash Mob'">Register</button>
+        </div>
+
+        <div class="card">
+            <img src="img/event5.jpg" class="event-img">
+            <h4>Hackathon 2026</h4>
+            <p>Date: 2026-05-15</p>
+            <p>Location: Innovation Lab</p>
+            <button onclick="location.href='form.html?event=Hackathon 2026'">Register</button>
+        </div>
+
+        <div class="card">
+            <img src="img/event6.jpg" class="event-img">
+            <h4>Ted-Talks</h4>
+            <p>Date: 2026-06-01</p>
+            <p>Location: Auditorium</p>
+            <button onclick="location.href='form.html?event=Ted-Talks'">Register</button>
+        </div>
+
+    </div>
+</section>
+
+<!-- Footer -->
+<footer id="footer">
+    <div class="footer-content">
+        <div>
+            <h4>About</h4>
+            <p>UniEvents helps manage and organize campus events efficiently.</p>
+        </div>
+
+        <div>
+            <h4>Contact</h4>
+            <p>Email: support@unievents.com</p>
+            <p>Phone: +91 9876543210</p>
+        </div>
+
+        <div>
+            <h4>Follow Us</h4>
+            <p><img src="img/insta.png"> Instagram</p>
+            <p><img src="img/linkedin.png"> LinkedIn</p>
+            <p><img src="img/twitter.png"> Twitter</p>
+        </div>
+    </div>
+
+    <div class="ftimg">
+        <img src="img/logo.png">
+    </div>
+
+    <p class="copyright">© 2026 UniEvents. All rights reserved.</p>
+</footer>
+
+<script>
+function scrollToEvents() {
+    document.getElementById("events").scrollIntoView({ behavior: "smooth" });
+}
+</script>
+
+</body>
+</html>

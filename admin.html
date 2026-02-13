@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<section class="admin-container">
+    <h2>Admin Event Management</h2>
+
+    <input type="text" id="eventName" placeholder="Event Name">
+    <input type="date" id="eventDate">
+    <input type="text" id="eventLocation" placeholder="Location">
+    <input type="text" id="eventImage" placeholder="Image URL (optional)">
+
+    <button onclick="addEvent()">Add Event</button>
+
+    <h3>Existing Events</h3>
+    <div id="adminEventList"></div>
+
+    <a href="index.html">← Back</a>
+</section>
+
+<script src="admin.js"></script>
+</body>
+</html>
