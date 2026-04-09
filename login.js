@@ -1,12 +1,12 @@
-const API_BASE = "http://localhost:5000/api";
 let isVerified = false;
 
 // ── REGISTER ──────────────────────────────────────────────────────────
 async function handleRegister(event) {
     event.preventDefault();
+
     if (!isVerified) {
-    alert("Please verify your email first!");
-    return;
+        alert("Please verify your email first!");
+        return;
     }
 
     const name = document.getElementById("name").value.trim();
@@ -20,7 +20,7 @@ async function handleRegister(event) {
     }
 
     try {
-        const response = await fetch(`${API_BASE}/auth/register`, {
+        const response = await fetch(`${API_BASE}/api/auth/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name, email, password, role })
@@ -58,7 +58,7 @@ async function handleLogin(event) {
     }
 
     try {
-        const response = await fetch(`${API_BASE}/auth/login`, {
+        const response = await fetch(`${API_BASE}/api/auth/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
@@ -85,6 +85,8 @@ async function handleLogin(event) {
         console.error(err);
     }
 }
+
+// ── SEND OTP ──────────────────────────────────────────────────────────
 async function sendOTP() {
     const email = document.getElementById("email").value.trim();
 
@@ -94,18 +96,28 @@ async function sendOTP() {
     }
 
     try {
-        await fetch("http://localhost:5000/api/send-otp", {
+        const res = await fetch(`${API_BASE}/api/send-otp`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email })
         });
 
+        const data = await res.json();
+
+        if (!res.ok) {
+            alert(data.message || "Failed to send OTP");
+            return;
+        }
+
         alert("OTP sent to your email 📧");
 
     } catch (err) {
         alert("Failed to send OTP");
+        console.error(err);
     }
 }
+
+// ── VERIFY OTP ────────────────────────────────────────────────────────
 async function verifyOTP() {
     const email = document.getElementById("email").value.trim();
     const otp = document.getElementById("otpInput").value.trim();
@@ -116,18 +128,24 @@ async function verifyOTP() {
     }
 
     try {
-        const res = await fetch("http://localhost:5000/api/verify-otp", {
+        const res = await fetch(`${API_BASE}/api/verify-otp`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, otp })
         });
 
-        if (!res.ok) throw new Error();
+        const data = await res.json();
+
+        if (!res.ok) {
+            alert(data.message || "Invalid OTP ❌");
+            return;
+        }
 
         isVerified = true;
         alert("Email verified ✅");
 
     } catch (err) {
         alert("Invalid OTP ❌");
+        console.error(err);
     }
 }
