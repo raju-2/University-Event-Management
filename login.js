@@ -1,13 +1,13 @@
-let isVerified = false;
+let isVerified = true; // 🔥 always true (OTP removed)
 
-// ── REGISTER ──────────────────────────────────────────────────────────
+// ── EMAIL VALIDATION ─────────────────────────────────
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+// ── REGISTER ─────────────────────────────────────────
 async function handleRegister(event) {
     event.preventDefault();
-
-    if (!isVerified) {
-        alert("Please verify your email first!");
-        return;
-    }
 
     const name = document.getElementById("name").value.trim();
     const email = document.getElementById("email").value.trim();
@@ -16,6 +16,18 @@ async function handleRegister(event) {
 
     if (!name || !email || !password) {
         alert("Please fill all fields");
+        return;
+    }
+
+    // ✅ Email format check
+    if (!isValidEmail(email)) {
+        alert("Enter a valid email address");
+        return;
+    }
+
+    // ✅ Optional restriction (you can remove if not needed)
+    if (!email.endsWith("@gmail.com")) {
+        alert("Use a valid Gmail account");
         return;
     }
 
@@ -45,7 +57,7 @@ async function handleRegister(event) {
     }
 }
 
-// ── LOGIN ─────────────────────────────────────────────────────────────
+// ── LOGIN ────────────────────────────────────────────
 async function handleLogin(event) {
     event.preventDefault();
 
@@ -86,66 +98,11 @@ async function handleLogin(event) {
     }
 }
 
-// ── SEND OTP ──────────────────────────────────────────────────────────
+// 🔥 OTP FUNCTIONS DISABLED (no longer used)
 async function sendOTP() {
-    const email = document.getElementById("email").value.trim();
-
-    if (!email) {
-        alert("Enter email first");
-        return;
-    }
-
-    try {
-        const res = await fetch(`${API_BASE}/send-otp`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email })
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-            alert(data.message || "Failed to send OTP");
-            return;
-        }
-
-        alert("OTP sent to your email 📧");
-
-    } catch (err) {
-        alert("Failed to send OTP");
-        console.error(err);
-    }
+    alert("OTP disabled for this version");
 }
 
-// ── VERIFY OTP ────────────────────────────────────────────────────────
 async function verifyOTP() {
-    const email = document.getElementById("email").value.trim();
-    const otp = document.getElementById("otpInput").value.trim();
-
-    if (!otp) {
-        alert("Enter OTP");
-        return;
-    }
-
-    try {
-        const res = await fetch(`${API_BASE}/verify-otp`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, otp })
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-            alert(data.message || "Invalid OTP ❌");
-            return;
-        }
-
-        isVerified = true;
-        alert("Email verified ✅");
-
-    } catch (err) {
-        alert("Invalid OTP ❌");
-        console.error(err);
-    }
+    alert("OTP disabled for this version");
 }

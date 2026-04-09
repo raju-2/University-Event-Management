@@ -4,7 +4,7 @@
 // ============================================
 
 // ⏳ Set session timeout (30 minutes)
-const SESSION_TIMEOUT = 5 * 60 * 1000; // 5 minutes
+const SESSION_TIMEOUT = 20 * 60 * 1000; // 5 minutes
 const WARNING_TIME   = 60 * 1000;       // warn 1 min before
 const SESSION_KEY    = "lastActivity";
 

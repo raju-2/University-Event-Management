@@ -1,4 +1,3 @@
-// api.js
 const API_BASE = "https://university-event-management-08c3.onrender.com/api";
 
 async function apiCall(endpoint, options = {}) {
@@ -12,17 +11,10 @@ async function apiCall(endpoint, options = {}) {
         ...options
     };
 
-    try {
-        const res = await fetch(`${API_BASE}${endpoint}`, config);
-        const data = await res.json();
+    const res = await fetch(`${API_BASE}${endpoint}`, config);
+    const data = await res.json();
 
-        if (!res.ok) {
-            throw new Error(data.message || "Something went wrong");
-        }
+    if (!res.ok) throw new Error(data.message || "Error");
 
-        return data;
-    } catch (err) {
-        console.error("API Error:", err.message);
-        throw err;
-    }
+    return data;
 }
