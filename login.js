@@ -1,8 +1,15 @@
-let isVerified = true; // 🔥 always true (OTP removed)
+let isVerified = true; // OTP removed
 
 // ── EMAIL VALIDATION ─────────────────────────────────
 function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function isAllowedEmail(email) {
+    return (
+        email.endsWith("@gmail.com") ||
+        email.endsWith("@vitapstudent.ac.in")
+    );
 }
 
 // ── REGISTER ─────────────────────────────────────────
@@ -19,29 +26,11 @@ async function handleRegister(event) {
         return;
     }
 
-    // ✅ Email format check
-    if (!isValidEmail(email)) {
-        alert("Enter a valid email address");
+    // ✅ Validation
+    if (!isValidEmail(email) || !isAllowedEmail(email)) {
+        alert("Use a valid Gmail or VIT-AP student email");
         return;
     }
-
-    // ✅ Optional restriction (you can remove if not needed)
-    function isValidEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
-
-    function isAllowedEmail(email) {
-    return (
-        email.endsWith("@gmail.com") ||
-        email.endsWith("@vitapstudent.ac.in")
-    );
-    }
-
-// inside handleRegister
-if (!isValidEmail(email) || !isAllowedEmail(email)) {
-    alert("Use a valid Gmail or VIT-AP student email");
-    return;
-}
 
     try {
         const response = await fetch(`${API_BASE}/auth/register`, {
@@ -110,11 +99,11 @@ async function handleLogin(event) {
     }
 }
 
-// 🔥 OTP FUNCTIONS DISABLED (no longer used)
+// OTP disabled
 async function sendOTP() {
-    alert("OTP disabled for this version");
+    alert("OTP disabled");
 }
 
 async function verifyOTP() {
-    alert("OTP disabled for this version");
+    alert("OTP disabled");
 }
