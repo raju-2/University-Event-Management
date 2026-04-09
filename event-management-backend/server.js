@@ -119,29 +119,24 @@ const startServer = async () => {
   await verifyConnection();
   await initDatabase();
 
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`🚀 Server running on port ${PORT}`);
 
     console.log(`\n📋 Available endpoints:`);
     console.log(`   POST   /api/auth/register`);
     console.log(`   POST   /api/auth/login`);
     console.log(`   GET    /api/auth/me`);
-    console.log(`   GET    /api/events          (public)`);
-    console.log(`   GET    /api/events/:id      (public)`);
-    console.log(`   POST   /api/events          (admin)`);
-    console.log(`   PUT    /api/events/:id      (admin)`);
-    console.log(`   DELETE /api/events/:id      (admin)`);
-    console.log(`   PATCH  /api/events/:id/complete  (admin)`);
-    console.log(`   POST   /api/events/:id/register  (student)`);
-    console.log(`   DELETE /api/events/:id/register  (student)`);
-    console.log(`   GET    /api/admin/stats     (admin)`);
-    console.log(`   GET    /api/admin/users     (admin)`);
-    console.log(
-      `   GET    /api/admin/events/:id/attendees  (admin)`
-    );
+    console.log(`   GET    /api/events`);
+    console.log(`   GET    /api/events/:id`);
+    console.log(`   POST   /api/events`);
+    console.log(`   PUT    /api/events/:id`);
+    console.log(`   DELETE /api/events/:id`);
+    console.log(`   PATCH  /api/events/:id/complete`);
+    console.log(`   POST   /api/events/:id/register`);
+    console.log(`   DELETE /api/events/:id/register`);
+    console.log(`   GET    /api/admin/stats`);
+    console.log(`   GET    /api/admin/users`);
+    console.log(`   GET    /api/admin/events/:id/attendees`);
 
     console.log(`\n🔐 OTP endpoints:`);
     console.log(`   POST   /api/send-otp`);
