@@ -1,83 +1,79 @@
-function scrollToEvents() {
-    document.getElementById("events").scrollIntoView({
-        behavior: "smooth"
-    });
+const getToken = () => localStorage.getItem("token");
+const getUser = () => {
+    try { return JSON.parse(localStorage.getItem("currentUser")); }
+    catch { return null; }
+};
+
+document.addEventListener("DOMContentLoaded", async function () {
+    const user = getUser();
+    const token = getToken();
+
+    if (!token || !user) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    updateNavbar(user);
+    loadEvents();
+});
+
+function updateNavbar(user) {
+    document.getElementById("loginBtn").style.display = "none";
+    document.getElementById("registerBtn").style.display = "none";
+    document.getElementById("logoutBtn").style.display = "inline-block";
+
+    const greeting = document.getElementById("userGreeting");
+    greeting.style.display = "inline-block";
+    greeting.textContent = `👤 ${user.name.split(" ")[0]}`;
+
+    if (user.role === "admin") {
+        document.getElementById("adminBtn").style.display = "inline-block";
+    }
 }
 
-function registerEvent(eventName) {
-    alert("Successfully Registered for " + eventName + " 🎉");
-}
-
-
-// Load events from localStorage
-let events = JSON.parse(localStorage.getItem("events")) || [];
-
-// If no events exist, add default ones
-if (events.length === 0) {
-    events = [
-        {
-            name: "Tech Fest 2026",
-            date: "2026-03-25",
-            location: "Sports Triangle",
-            image: "img/event1.jpg"
-        },
-        {
-            name: "AI Workshop",
-            date: "2026-04-05",
-            location: "Lab 204",
-            image: "img/event2.jpg"
-        },
-        {
-            name: "Sports Event",
-            date: "2026-04-20",
-            location: "Main Ground",
-            image: "img/event3.jpg"
-        },
-        {
-            name: "Flash Mob",
-            date: "2026-05-02",
-            location: "Rock Plaza",
-            image: "img/event4.jpg"
-        },
-        {
-            name: "Hackathon 2026",
-            date: "2026-05-15",
-            location: "Innovation Lab",
-            image: "img/event5.jpg"
-        },
-        {
-            name: "Ted-Talks",
-            date: "2026-06-01",
-            location: "Auditorium",
-            image: "img/event6.jpg"
-        }
-    ];
-
-    localStorage.setItem("events", JSON.stringify(events));
-}
-
-
-// Display Events
-function displayEvents() {
+async function loadEvents() {
     const container = document.getElementById("eventList");
-    container.innerHTML = "";
+    container.innerHTML = "<p>Loading events...</p>";
 
-    events.forEach(event => {
-        container.innerHTML += `
-        <div class="card">
-            <img src="${event.image || 'https://via.placeholder.com/400x200'}" class="event-img">
-            <h4>${event.name}</h4>
-            <p>Date: ${event.date}</p>
-            <p>Location: ${event.location}</p>
-            <button onclick="location.href='form.html?event=${event.name}'">
-                Register
-            </button>
-        </div>
-        `;
-    });
+    try {
+        const data = await apiCall("/events");
+
+        if (!data.events || data.events.length === 0) {
+            container.innerHTML = "<p>No events available</p>";
+            return;
+        }
+
+        container.innerHTML = "";
+
+        data.events.forEach((event, i) => {
+            const imgSrc = event.imageUrl || `img/event${(i % 6) + 1}.jpg`;
+
+            container.innerHTML += `
+                <div class="card">
+                    <img src="${imgSrc}" class="event-img">
+                    <h4>${event.title}</h4>
+                    <p>Date: ${new Date(event.date).toLocaleDateString()}</p>
+                    <p>Location: ${event.location}</p>
+                    <p style="font-size:13px;color:#888;">👥 ${event.registrationCount}/${event.capacity}</p>
+                    <button onclick="goToForm('${event.id}', '${event.title}')">Register</button>
+                </div>
+            `;
+        });
+
+    } catch (err) {
+        container.innerHTML = `<p style="color:red">${err.message}</p>`;
+    }
 }
 
-displayEvents();
+function goToForm(id, title) {
+    window.location.href = `form.html?eventId=${id}&event=${encodeURIComponent(title)}`;
+}
 
+function logout() {
+    localStorage.clear();
+    window.location.href = "login.html";
+}
 
-displayEvents();
+function scrollToEvents() {
+    document.getElementById("events")?.scrollIntoView({ behavior: "smooth" });
+}

@@ -4,128 +4,107 @@
     <meta charset="UTF-8">
     <title>Event Registration</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <link rel="stylesheet" href="form.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body {
             background: linear-gradient(135deg, #4F46E5, #7C3AED);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            display: flex; justify-content: center;
+            align-items: center; min-height: 100vh; padding: 20px;
         }
-
         .form-container {
-            background: white;
-            padding: 30px;
-            width: 420px;
+            background: white; padding: 35px;
+            width: 100%; max-width: 480px;
             border-radius: 15px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             animation: fadeIn 0.4s ease-in-out;
         }
-
         .form-container h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #4F46E5;
+            text-align: center; margin-bottom: 6px;
+            color: #4F46E5; font-size: 20px;
         }
-
+        .form-container p.subtitle {
+            text-align: center; color: #888;
+            font-size: 13px; margin-bottom: 20px;
+        }
         .form-container input,
         .form-container select,
         .form-container textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 12px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-size: 14px;
+            width: 100%; padding: 10px 12px;
+            margin-bottom: 12px; border-radius: 8px;
+            border: 1px solid #ccc; font-size: 14px;
         }
-
         .form-container input:focus,
         .form-container select:focus,
         .form-container textarea:focus {
-            outline: none;
-            border-color: #4F46E5;
-            box-shadow: 0 0 5px rgba(79,70,229,0.4);
+            outline: none; border-color: #4F46E5;
+            box-shadow: 0 0 5px rgba(79,70,229,0.3);
         }
-
+        label { font-size: 13px; color: #555; margin-bottom: 4px; display: block; }
         .form-container button {
-            width: 100%;
-            padding: 12px;
+            width: 100%; padding: 12px;
             background: linear-gradient(90deg, #4F46E5, #7C3AED);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
+            color: white; border: none; border-radius: 8px;
+            cursor: pointer; font-weight: 600; font-size: 15px;
             transition: 0.3s;
         }
-
-        .form-container button:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-
-        .back-link {
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        .back-link a {
-            color: #4F46E5;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
+        .form-container button:hover { opacity: 0.9; transform: translateY(-2px); }
+        .back-link { text-align: center; margin-top: 12px; }
+        .back-link a { color: #4F46E5; text-decoration: none; font-weight: 600; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-15px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
-
 <body>
 
 <div class="form-container">
     <h2 id="eventTitle">Event Registration</h2>
+    <p class="subtitle">Fill in your details to register</p>
 
     <form onsubmit="submitForm(event)">
 
-        <input type="text" placeholder="Full Name" required>
-        <input type="text" placeholder="Registration Number" required>
-        <input type="email" placeholder="Email Address" required>
-        <input type="tel" placeholder="Mobile Number" required>
+        <label>Full Name *</label>
+        <input type="text" id="fullName" placeholder="Full Name" required>
 
-        <select required>
+        <label>Registration Number *</label>
+        <input type="text" id="regNumber" placeholder="e.g. 22BCE1234" required>
+
+        <label>Email Address *</label>
+        <input type="email" id="emailAddr" placeholder="Email Address" required>
+
+        <label>Mobile Number *</label>
+        <input type="tel" id="mobile" placeholder="Mobile Number" required>
+
+        <label>Gender *</label>
+        <select id="gender" required>
             <option value="">Select Gender</option>
             <option>Male</option>
             <option>Female</option>
             <option>Other</option>
         </select>
 
-        <select required>
-            <option value="">Event Type</option>
+        <label>Event Type *</label>
+        <select id="eventType" required>
+            <option value="">Select Event Type</option>
             <option>Technical</option>
             <option>Cultural</option>
             <option>Sports</option>
         </select>
 
-        <select required>
-            <option value="">Participation Type</option>
+        <label>Participation Type *</label>
+        <select id="participationType" required>
+            <option value="">Select Participation</option>
             <option>Solo</option>
             <option>Team</option>
         </select>
+        
 
-        <textarea rows="3" placeholder="Performer / Event Details"></textarea>
+        <label>Additional Details</label>
+        <textarea id="details" rows="3" placeholder="Any extra info (team name, special requirements etc.)"></textarea>
 
-        <button type="submit">Submit Registration</button>
-
+        <button type="submit">✅ Submit Registration</button>
     </form>
 
     <div class="back-link">
@@ -133,21 +112,8 @@
     </div>
 </div>
 
-<script>
-    // Get event name from URL
-    const params = new URLSearchParams(window.location.search);
-    const eventName = params.get("event");
-
-    if (eventName) {
-        document.getElementById("eventTitle").innerText = "Register for " + eventName;
-    }
-
-    function submitForm(e) {
-        e.preventDefault();
-        alert("Registration Successful 🎉");
-        window.location.href = "index.html";
-    }
-</script>
-
+<script src="api.js"></script>
+<script src="session.js"></script>
+<script src="form.js"></script>
 </body>
 </html>

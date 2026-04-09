@@ -139,6 +139,25 @@ nav button:hover, nav a:hover {
     border-radius: 10px;
     cursor: pointer;
 }
+.event-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+.card {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+.event-img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 8px;
+}
 
 /* FOOTER */
 footer {
@@ -297,4 +316,15 @@ footer .copyright {
         font-size: 14px;
     }
 
+}
+@media (max-width: 1024px) {
+    .event-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .event-grid {
+        grid-template-columns: 1fr;
+    }
 }
