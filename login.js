@@ -40,7 +40,7 @@ async function handleRegister(event) {
         window.location.href = "index.html";
 
     } catch (err) {
-        alert("Server error. Make sure backend is running on port 5000.");
+        alert("Server error. Please try again.");
         console.error(err);
     }
 }
