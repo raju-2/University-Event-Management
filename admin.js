@@ -16,6 +16,9 @@ document.addEventListener("DOMContentLoaded", function () {
     loadAllEvents();
 });
 
+// ─────────────────────────────────────────
+// LOAD ALL EVENTS
+// ─────────────────────────────────────────
 async function loadAllEvents() {
     const list = document.getElementById("adminEventList");
     list.innerHTML = "<p style='color:#888;'>Loading...</p>";
@@ -23,7 +26,7 @@ async function loadAllEvents() {
     try {
         const data = await apiCall("/events/all");
 
-        if (!data.events.length) {
+        if (!data.events || data.events.length === 0) {
             list.innerHTML = "<p style='color:#888;'>No events yet</p>";
             return;
         }
@@ -44,7 +47,8 @@ async function loadAllEvents() {
                     </div>
 
                     <div class="event-meta">
-                        📅 ${event.date} &nbsp;|&nbsp; 📍 ${event.location}
+                        📅 ${new Date(event.date).toLocaleDateString()} 
+                        &nbsp;|&nbsp; 📍 ${event.location}
                         &nbsp;|&nbsp; 👥 ${event.registrationCount}/${event.capacity}
                     </div>
 
@@ -71,11 +75,15 @@ async function loadAllEvents() {
         list.innerHTML = `<p style="color:red">${err.message}</p>`;
     }
 }
+
+// ─────────────────────────────────────────
+// ADD EVENT
+// ─────────────────────────────────────────
 async function addEvent() {
-    const title = eventName.value.trim();
-    const date = eventDate.value;
-    const location = eventLocation.value.trim();
-    const imageUrl = eventImage.value.trim();
+    const title = document.getElementById("eventName").value.trim();
+    const date = document.getElementById("eventDate").value;
+    const location = document.getElementById("eventLocation").value.trim();
+    const imageUrl = document.getElementById("eventImage").value.trim();
 
     if (!title || !date || !location) {
         alert("Fill all required fields");
@@ -85,10 +93,23 @@ async function addEvent() {
     try {
         await apiCall("/events", {
             method: "POST",
-            body: JSON.stringify({ title, date, location, imageUrl, capacity: 100 })
+            body: JSON.stringify({
+                title,
+                date,
+                location,
+                imageUrl,
+                capacity: 100
+            })
         });
 
         alert("Event Added ✅");
+
+        // Clear form
+        document.getElementById("eventName").value = "";
+        document.getElementById("eventDate").value = "";
+        document.getElementById("eventLocation").value = "";
+        document.getElementById("eventImage").value = "";
+
         loadAllEvents();
 
     } catch (err) {
@@ -96,6 +117,9 @@ async function addEvent() {
     }
 }
 
+// ─────────────────────────────────────────
+// DELETE EVENT
+// ─────────────────────────────────────────
 async function deleteEvent(id) {
     if (!confirm("Delete this event?")) return;
 
@@ -108,6 +132,9 @@ async function deleteEvent(id) {
     }
 }
 
+// ─────────────────────────────────────────
+// MARK COMPLETE
+// ─────────────────────────────────────────
 async function markComplete(id) {
     try {
         await apiCall(`/events/${id}/complete`, { method: "PATCH" });
@@ -118,6 +145,9 @@ async function markComplete(id) {
     }
 }
 
+// ─────────────────────────────────────────
+// VIEW ATTENDEES
+// ─────────────────────────────────────────
 async function viewAttendees(eventId, eventTitle) {
     const panel = document.getElementById("attendeesPanel");
     panel.innerHTML = "<p style='color:#888;'>Loading...</p>";
@@ -125,7 +155,7 @@ async function viewAttendees(eventId, eventTitle) {
     try {
         const data = await apiCall(`/admin/events/${eventId}/attendees`);
 
-        if (!data.attendees.length) {
+        if (!data.attendees || data.attendees.length === 0) {
             panel.innerHTML = `
                 <div class="attendee-placeholder">
                     <span>📭</span>
@@ -169,6 +199,9 @@ async function viewAttendees(eventId, eventTitle) {
     }
 }
 
+// ─────────────────────────────────────────
+// LOGOUT
+// ─────────────────────────────────────────
 function logout() {
     localStorage.clear();
     window.location.href = "login.html";

@@ -20,7 +20,7 @@ async function handleRegister(event) {
     }
 
     try {
-        const response = await fetch(`${API_BASE}/api/auth/register`, {
+        const response = await fetch(`${API_BASE}/auth/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name, email, password, role })
@@ -58,7 +58,7 @@ async function handleLogin(event) {
     }
 
     try {
-        const response = await fetch(`${API_BASE}/api/auth/login`, {
+        const response = await fetch(`${API_BASE}/auth/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
@@ -96,7 +96,7 @@ async function sendOTP() {
     }
 
     try {
-        const res = await fetch(`${API_BASE}/api/send-otp`, {
+        const res = await fetch(`${API_BASE}/send-otp`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email })
@@ -128,7 +128,7 @@ async function verifyOTP() {
     }
 
     try {
-        const res = await fetch(`${API_BASE}/api/verify-otp`, {
+        const res = await fetch(`${API_BASE}/verify-otp`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, otp })
