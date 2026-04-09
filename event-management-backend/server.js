@@ -13,7 +13,9 @@ let otpStore = {};
 
 // Email transporter (Gmail)
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false, // IMPORTANT
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
@@ -23,7 +25,7 @@ const transporter = nodemailer.createTransport({
 // ─── Middleware ──────────────────────────────────────────────────────────────
 app.use(
   cors({
-    origin: "https://your-final-app.vercel.app",
+    origin: "https://event-management-seven-teal.vercel.app",
     credentials: true,
   })
 );
