@@ -119,9 +119,11 @@ const startServer = async () => {
   await verifyConnection();
   await initDatabase();
 
-  app.listen(PORT, () => {
-    console.log(`\n🚀 Server running on http://localhost:${PORT}`);
-    console.log(`📌 API base: http://localhost:${PORT}/api`);
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
 
     console.log(`\n📋 Available endpoints:`);
     console.log(`   POST   /api/auth/register`);
