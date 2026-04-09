@@ -26,10 +26,22 @@ async function handleRegister(event) {
     }
 
     // ✅ Optional restriction (you can remove if not needed)
-    if (!email.endsWith("@gmail.com")) {
-        alert("Use a valid Gmail account");
-        return;
+    function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
+
+    function isAllowedEmail(email) {
+    return (
+        email.endsWith("@gmail.com") ||
+        email.endsWith("@vitapstudent.ac.in")
+    );
+    }
+
+// inside handleRegister
+if (!isValidEmail(email) || !isAllowedEmail(email)) {
+    alert("Use a valid Gmail or VIT-AP student email");
+    return;
+}
 
     try {
         const response = await fetch(`${API_BASE}/auth/register`, {
