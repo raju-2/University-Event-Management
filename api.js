@@ -1,5 +1,5 @@
 // api.js
-const API_BASE = "https://university-event-management-08c3.onrender.com/api"; 
+const API_BASE = "https://university-event-management-08c3.onrender.com";
 
 async function apiCall(endpoint, options = {}) {
     const token = localStorage.getItem("token");
