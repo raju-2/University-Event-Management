@@ -62,7 +62,30 @@ const edges = new vis.DataSet(
         from: l.source,
         to: l.target,
         label: l.type,
-        arrows: "to"
+
+        arrows: "to",
+
+        // ✅ Make labels visible
+        font: {
+            size: 14,
+            color: "#ffffff",
+            strokeWidth: 3,
+            strokeColor: "#000000",
+            align: "middle"
+        },
+
+        // ✅ Improve line visibility
+        color: {
+            color: "#cccccc",
+            highlight: "#ffffff"
+        },
+
+        width: 2,
+
+        smooth: {
+            type: "curvedCW",   // prevents overlap
+            roundness: 0.2
+        }
     }))
 );
     const container = document.getElementById("network");
