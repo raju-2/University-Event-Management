@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Graph View</title>
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style>
+        #network {
+            width: 100%;
+            height: 600px;
+            border: 1px solid lightgray;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Neo4j Graph Visualization</h2>
+<div id="network"></div>
+
+<script>
+const API_BASE = "https://university-event-management-08c3.onrender.com/api";
+
+async function loadGraph() {
+    const res = await fetch(`${API_BASE}/admin/graph`);
+    const data = await res.json();
+
+    const nodes = new vis.DataSet(
+        data.nodes.map(n => ({
+            id: n.id,
+            label: n.label,
+        }))
+    );
+
+    const edges = new vis.DataSet(
+        data.links.map(l => ({
+            from: l.source,
+            to: l.target,
+            label: l.type
+        }))
+    );
+
+    const container = document.getElementById("network");
+
+    new vis.Network(container, { nodes, edges }, {});
+}
+
+loadGraph();
+</script>
+
+</body>
+</html>
