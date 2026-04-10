@@ -47,31 +47,24 @@ async function loadGraph() {
 
     // ✅ Nodes (Neo4j style)
     const nodes = new vis.DataSet(
-        data.nodes.map(n => ({
-            id: n.id,
-            label: n.label === "User" ? n.name : n.title,
-            group: n.label,
-            shape: "dot",
-            size: 20,
-            font: { color: "white" },
-            color: n.label === "User"
-                ? { background: "#4CAF50", border: "#2E7D32" }   // green
-                : { background: "#03A9F4", border: "#01579B" }   // blue
-        }))
-    );
+    data.nodes.map(n => ({
+        id: n.id,
+        label: n.label === "User" ? n.name : n.title,
+        color: n.label === "User" ? "#4CAF50" : "#03A9F4",
+        shape: "dot",
+        size: 20,
+        font: { color: "white" }
+    }))
+);
 
-    // ✅ Edges
-    const edges = new vis.DataSet(
-        data.links.map(l => ({
-            from: l.source,
-            to: l.target,
-            label: l.type,
-            arrows: "to",
-            color: "#aaaaaa",
-            font: { color: "#ddd", size: 10 }
-        }))
-    );
-
+const edges = new vis.DataSet(
+    data.links.map(l => ({
+        from: l.source,
+        to: l.target,
+        label: l.type,
+        arrows: "to"
+    }))
+);
     const container = document.getElementById("network");
 
     const options = {

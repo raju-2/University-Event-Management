@@ -121,21 +121,20 @@ router.get("/graph", async (req, res) => {
             const m = record.get("m");
             const r = record.get("r");
 
-            // ✅ Use your custom ID (IMPORTANT)
+            // ✅ Use SAME ID everywhere
             const nId = n.properties.id;
             const mId = m.properties.id;
 
-            // ✅ Add node N (avoid duplicates)
+            // Nodes
             if (!nodesMap.has(nId)) {
                 nodesMap.set(nId, {
                     id: nId,
-                    label: n.labels[0], // User / Event
+                    label: n.labels[0],
                     name: n.properties.name,
                     title: n.properties.title
                 });
             }
 
-            // ✅ Add node M
             if (!nodesMap.has(mId)) {
                 nodesMap.set(mId, {
                     id: mId,
@@ -145,7 +144,7 @@ router.get("/graph", async (req, res) => {
                 });
             }
 
-            // ✅ Add relationship
+            // ❗ FIX: Use SAME IDs here
             links.push({
                 source: nId,
                 target: mId,
