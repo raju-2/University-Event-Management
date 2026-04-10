@@ -106,4 +106,49 @@ router.delete("/users/:id", async (req, res) => {
     }
 });
 
+router.get("/graph", async (req, res) => {
+    const session = driver.session();
+
+    try {
+        const result = await session.run(`
+            MATCH (n)-[r]->(m)
+            RETURN n, r, m LIMIT 50
+        `);
+
+        const nodes = [];
+        const links = [];
+
+        result.records.forEach(record => {
+            const n = record.get("n");
+            const m = record.get("m");
+            const r = record.get("r");
+
+            nodes.push({
+                id: n.identity.toString(),
+                label: n.labels[0],
+                ...n.properties
+            });
+
+            nodes.push({
+                id: m.identity.toString(),
+                label: m.labels[0],
+                ...m.properties
+            });
+
+            links.push({
+                source: n.identity.toString(),
+                target: m.identity.toString(),
+                type: r.type
+            });
+        });
+
+        res.json({ nodes, links });
+
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    } finally {
+        await session.close();
+    }
+});
+
 module.exports = router;
