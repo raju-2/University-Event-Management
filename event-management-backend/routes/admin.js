@@ -107,13 +107,12 @@ router.delete("/users/:id", async (req, res) => {
 });
 
 router.get("/graph", async (req, res) => {
-    const session = driver.session();
 
     try {
-        const result = await session.run(`
-            MATCH (n)-[r]->(m)
-            RETURN n, r, m LIMIT 50
-        `);
+        const result = await runQuery(
+            `MATCH (n)-[r]->(m)
+            RETURN n, r, m LIMIT 50`
+        );
 
         const nodes = [];
         const links = [];
