@@ -1,19 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Graph View</title>
+    <title>Neo4j Style Graph</title>
     <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+
     <style>
+        body {
+            margin: 0;
+            background: #1e1e1e;
+            color: white;
+            font-family: Arial;
+        }
+
+        h2 {
+            text-align: center;
+            padding: 10px;
+        }
+
         #network {
             width: 100%;
-            height: 600px;
-            border: 1px solid lightgray;
+            height: 90vh;
+            background: #262626;
         }
     </style>
 </head>
+
 <body>
 
-<h2>Neo4j Graph Visualization</h2>
+<h2>Graph View (Neo4j Style)</h2>
 <div id="network"></div>
 
 <script>
@@ -31,35 +45,61 @@ async function loadGraph() {
     const data = await res.json();
     console.log(data);
 
-    // Remove duplicates
-    const uniqueNodes = {};
-    data.nodes.forEach(n => {
-        uniqueNodes[n.id] = {
+    // ✅ Nodes (Neo4j style)
+    const nodes = new vis.DataSet(
+        data.nodes.map(n => ({
             id: n.id,
-            label: n.label
-        };
-    });
+            label: n.label === "User" ? n.name : n.title,
+            group: n.label,
+            shape: "dot",
+            size: 20,
+            font: { color: "white" },
+            color: n.label === "User"
+                ? { background: "#4CAF50", border: "#2E7D32" }   // green
+                : { background: "#03A9F4", border: "#01579B" }   // blue
+        }))
+    );
 
-    const nodes = new vis.DataSet(Object.values(uniqueNodes));
-
+    // ✅ Edges
     const edges = new vis.DataSet(
         data.links.map(l => ({
             from: l.source,
             to: l.target,
-            label: l.type
+            label: l.type,
+            arrows: "to",
+            color: "#aaaaaa",
+            font: { color: "#ddd", size: 10 }
         }))
     );
 
     const container = document.getElementById("network");
 
-    new vis.Network(container, { nodes, edges }, {
-        edges: {
-            arrows: "to"
+    const options = {
+        nodes: {
+            borderWidth: 2
         },
+
+        edges: {
+            smooth: true
+        },
+
         physics: {
-            enabled: true
+            enabled: true,
+            barnesHut: {
+                gravitationalConstant: -2500,
+                centralGravity: 0.2,
+                springLength: 120
+            }
+        },
+
+        interaction: {
+            hover: true,
+            navigationButtons: true,
+            keyboard: true
         }
-    });
+    };
+
+    new vis.Network(container, { nodes, edges }, options);
 }
 
 loadGraph();

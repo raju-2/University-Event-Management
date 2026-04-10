@@ -108,12 +108,12 @@ router.delete("/users/:id", async (req, res) => {
 
 router.get("/graph", async (req, res) => {
     try {
-        const records = await runQuery(
-            `MATCH (n)-[r]->(m)
-             RETURN n, r, m LIMIT 50`
-        );
+        const records = await runQuery(`
+            MATCH (n)-[r]->(m)
+            RETURN n, r, m LIMIT 50
+        `);
 
-        const nodes = [];
+        const nodesMap = new Map();
         const links = [];
 
         records.forEach(record => {
@@ -121,26 +121,42 @@ router.get("/graph", async (req, res) => {
             const m = record.get("m");
             const r = record.get("r");
 
-            nodes.push({
-                id: n.identity.toString(),
-                label: n.labels[0],
-                ...n.properties
-            });
+            // ✅ Use your custom ID (IMPORTANT)
+            const nId = n.properties.id;
+            const mId = m.properties.id;
 
-            nodes.push({
-                id: m.identity.toString(),
-                label: m.labels[0],
-                ...m.properties
-            });
+            // ✅ Add node N (avoid duplicates)
+            if (!nodesMap.has(nId)) {
+                nodesMap.set(nId, {
+                    id: nId,
+                    label: n.labels[0], // User / Event
+                    name: n.properties.name,
+                    title: n.properties.title
+                });
+            }
 
+            // ✅ Add node M
+            if (!nodesMap.has(mId)) {
+                nodesMap.set(mId, {
+                    id: mId,
+                    label: m.labels[0],
+                    name: m.properties.name,
+                    title: m.properties.title
+                });
+            }
+
+            // ✅ Add relationship
             links.push({
-                source: n.identity.toString(),
-                target: m.identity.toString(),
+                source: nId,
+                target: mId,
                 type: r.type
             });
         });
 
-        res.json({ nodes, links });
+        res.json({
+            nodes: Array.from(nodesMap.values()),
+            links
+        });
 
     } catch (err) {
         res.status(500).json({ message: err.message });
