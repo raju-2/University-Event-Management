@@ -23,21 +23,24 @@ async function loadGraph() {
     const token = localStorage.getItem("token");
 
     const res = await fetch(`${API_BASE}/admin/graph`, {
-    method: "GET",
-    headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-    }
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
     });
-    
-    const data = await res.json();
 
-    const nodes = new vis.DataSet(
-        data.nodes.map(n => ({
+    const data = await res.json();
+    console.log(data);
+
+    // Remove duplicates
+    const uniqueNodes = {};
+    data.nodes.forEach(n => {
+        uniqueNodes[n.id] = {
             id: n.id,
-            label: n.label,
-        }))
-    );
+            label: n.label
+        };
+    });
+
+    const nodes = new vis.DataSet(Object.values(uniqueNodes));
 
     const edges = new vis.DataSet(
         data.links.map(l => ({
@@ -49,7 +52,14 @@ async function loadGraph() {
 
     const container = document.getElementById("network");
 
-    new vis.Network(container, { nodes, edges }, {});
+    new vis.Network(container, { nodes, edges }, {
+        edges: {
+            arrows: "to"
+        },
+        physics: {
+            enabled: true
+        }
+    });
 }
 
 loadGraph();
