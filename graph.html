@@ -20,7 +20,16 @@
 const API_BASE = "https://university-event-management-08c3.onrender.com/api";
 
 async function loadGraph() {
-    const res = await fetch(`${API_BASE}/admin/graph`);
+    const token = localStorage.getItem("token");
+
+    const res = await fetch(`${API_BASE}/admin/graph`, {
+    method: "GET",
+    headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+    }
+    });
+    
     const data = await res.json();
 
     const nodes = new vis.DataSet(
